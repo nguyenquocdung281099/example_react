@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import TypeFilterItem from "./typefilteritem";
+import queryString from "query-string";
+import TypeFilterItem from "../filterItem/typefilteritem";
 export default function Typefilter(props) {
   let [type, settype] = useState([]);
 
@@ -12,13 +13,16 @@ export default function Typefilter(props) {
 
   useEffect(() => {
     async function fetchdata() {
-      let url = props.url2;
-      console.log(props.url2);
-      console.log("url type :", url);
+      let filter = { ...props.filter };
+      if (filter.type) {
+        delete filter.type;
+      }
+      let param = queryString.stringify(filter);
+      let url = `http://localhost:8000/api/product?${param}&`;
+      console.log(url);
       let data = await axios.get(url);
       data = data.data;
       let Type = [];
-      console.log(datas);
       data.forEach((itemd) => {
         let item = {};
         if (checkHave(Type, itemd.type) === -1) {
@@ -34,13 +38,14 @@ export default function Typefilter(props) {
     }
     fetchdata();
     // eslint-disable-next-line
-  }, [props.url2]);
+  }, [props.filter]);
   let datas = type.map((item, key) => (
     <TypeFilterItem
       revicedTypeFilter={props.revicedTypeFilter}
       type={item}
       key={key}
       search={props.search}
+      filter={props.filter}
     />
   ));
   return <div className="p-3">{datas}</div>;

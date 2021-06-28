@@ -7,7 +7,7 @@ export default function Header(props) {
     props.revicedContentSearch(contentSearch);
   }
   return (
-    <nav className="navbar navbar-dark bg-dark navbar-expand-lg">
+    <nav className="navbar navbar-dark bg-dark navbar-expand-lg fixed-top">
       <a href="/" className="navbar-brand">
         <img
           alt="logo"

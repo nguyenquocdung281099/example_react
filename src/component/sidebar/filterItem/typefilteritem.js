@@ -15,6 +15,13 @@ export default function TypeFilterItem(props) {
       setchecked(false);
     }
   }, [props.search]);
+
+  useEffect(() => {
+    if (Object.keys(props.filter).length === 0) {
+      setchecked(false);
+    }
+  }, [props.filter]);
+
   return (
     <div className="form-check">
       <input
@@ -23,6 +30,7 @@ export default function TypeFilterItem(props) {
         id={props.type.name}
         defaultChecked={checked}
         value={props.type.name}
+        checked={checked}
         onClick={() => {
           CheckedInput();
         }}

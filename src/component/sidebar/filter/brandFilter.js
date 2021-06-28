@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import BrandFilterItem from "./brandItem";
+import BrandFilterItem from "../filterItem/brandItem";
+import queryString from "query-string";
 
 export default function BrandFilter(props) {
   let [valueSearchBrand, setvaluesearchBrand] = useState("");
@@ -8,6 +9,7 @@ export default function BrandFilter(props) {
 
   function handleSearchBrand(e) {
     setvaluesearchBrand(e.target.value);
+    console.log(e.target.value);
   }
 
   function checkHave(array, value) {
@@ -17,7 +19,12 @@ export default function BrandFilter(props) {
   }
   useEffect(() => {
     async function fetchdata() {
-      let url = props.url2;
+      let filter = { ...props.filter };
+      if (filter.brand) {
+        delete filter.brand;
+      }
+      let param = queryString.stringify(filter);
+      let url = `http://localhost:8000/api/product?${param}&`;
       let data = await axios.get(url);
       data = data.data;
       let brand = [];
@@ -35,15 +42,13 @@ export default function BrandFilter(props) {
           (item) => item.name.indexOf(valueSearchBrand) !== -1
         );
       }
-      console.log(brand);
-
       brand.sort((a, b) => b.count - a.count);
       brand = brand.filter((item, key) => key < 5);
       setBrand(brand);
     }
     fetchdata();
     // eslint-disable-next-line
-  }, [props.url2, valueSearchBrand]);
+  }, [props.filter, valueSearchBrand]);
   return (
     <>
       <input
@@ -53,6 +58,7 @@ export default function BrandFilter(props) {
       />
       {Brand.map((item, index) => (
         <BrandFilterItem
+          filter={props.filter}
           brand={item}
           key={index}
           revicedBrandFilter={props.revicedBrandFilter}

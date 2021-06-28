@@ -22,18 +22,33 @@ nav img {
 .star i {
   color: orange;
   font-size: 70%;
+  cursor: pointer;
 }
 .container_body {
   height: 90vh;
   overflow-y: scroll;
+  width: 100%;
 }
 .filter {
   height: 90vh;
-  overflow: scroll;
+  overflow-y: scroll;
+  /* width: 100%; */
 }
-
+.pricefilter input {
+  width: 25%;
+  margin: 0.3rem;
+}
+.pricefilter button {
+  border-radius: 50%;
+}
+.itemfilterprice {
+  cursor: pointer;
+}
 .itemNav {
   list-style: none;
+}
+li {
+  list-style-type: none;
 }
 .itemNav a {
   color: black;

@@ -8,6 +8,7 @@ export default function ItemProduct(props) {
             data[data.length]=<i className="far fa-star" key ={i}></i>
         }
     }
+
     return(
         <div className="card">
             <img className="card-img-top" src={props.item.image} alt="Card cap"/>

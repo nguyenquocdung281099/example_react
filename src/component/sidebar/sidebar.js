@@ -1,9 +1,12 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import BrandFilter from "./brandFilter";
+import BrandFilter from "./filter/brandFilter";
 
-import NavList from "./navlist";
-import Typefilter from "./typefiler";
+import NavList from "./filter/navlist";
+import Typefilter from "./filter/typefiler";
+import queryString from "query-string";
+import Ratings from "./filter/Ratings";
+import PriceFilter from "./filter/priceFilter";
 
 export default function Sidebar(props) {
   let [category, setcategory] = useState([]);
@@ -15,7 +18,12 @@ export default function Sidebar(props) {
   }
   useEffect(() => {
     async function fetchdata() {
-      let url = "http://localhost:8000/api/product";
+      let filter = props.filter;
+      if (filter.categories_like) {
+        filter.categories_like = "";
+      }
+      let param = queryString.stringify(filter);
+      let url = `http://localhost:8000/api/product?${param}&`;
       let data = await axios.get(url);
       data = data.data;
       let datas = [...data];
@@ -30,7 +38,6 @@ export default function Sidebar(props) {
           });
         });
       }
-      console.log(datas);
       let categories = [];
       datas.forEach((item) => {
         let lv0 = item.hierarchicalCategories.lvl0;
@@ -67,7 +74,6 @@ export default function Sidebar(props) {
         });
       });
       setcategory(categories);
-      console.log(categories);
     }
     fetchdata();
   }, [props.url]);
@@ -76,6 +82,7 @@ export default function Sidebar(props) {
   datas = categoryy.map((item, index) => {
     return (
       <NavList
+        filter={props.filter}
         idactive={props.idactive}
         key={index}
         id={index}
@@ -86,12 +93,23 @@ export default function Sidebar(props) {
   });
 
   return (
-    <div className="pt-2">
+    <div className="pt-2 mt-5 pt-5 filter">
+      {Object.keys(props.filter).length !== 0 && (
+        <button
+          type="button"
+          class="btn btn-danger"
+          onClick={() => {
+            props.clearFilter();
+          }}
+        >
+          Clear Filter
+        </button>
+      )}
       <h3>Show results for</h3>
       {datas}
       <h3>Refine by</h3>
       <Typefilter
-        url2={props.url2}
+        filter={props.filter}
         revicedTypeFilter={props.revicedTypeFilter}
         url={props.url}
         search={props.search}
@@ -100,9 +118,14 @@ export default function Sidebar(props) {
       />
       <h4>Brand</h4>
       <BrandFilter
-        url2={props.url2}
+        filter={props.filter}
         revicedBrandFilter={props.revicedBrandFilter}
       />
+      <h4>Ratings</h4>
+      <Ratings filter={props.filter} revicedRating={props.revicedRating} />
+      <h4>Price</h4>
+
+      <PriceFilter revicedPrice={props.revicedPrice} />
     </div>
   );
 }

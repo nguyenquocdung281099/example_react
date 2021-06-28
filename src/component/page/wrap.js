@@ -1,110 +1,80 @@
 import Header from "./header";
 import BodyPage from "./bodyPage";
 import { useState } from "react";
-import { URL_PRODUCT } from "../../const";
+import queryString from "query-string";
+
 export default function Wrap() {
-  let [url, setUrl] = useState(URL_PRODUCT + "?");
-  let [url2, setUrl2] = useState(URL_PRODUCT + "?");
+  const [filter, setfilter] = useState({});
 
-  let [filter, setfilter] = useState("");
-  let [search, setsearch] = useState("");
-  let [idactive, setidactive] = useState("");
-  let [valuetypefilter, setvaluetypefilter] = useState([]);
-  let [valuebrandfilter, setvaluebrandfilter] = useState([]);
+  function clearFilter() {
+    setfilter({});
+  }
 
-  let [typefilters, settypefilters] = useState("");
-  let [brandsfilters, setbrandsfilters] = useState("");
-
-  let [statustype, setstatustype] = useState(false);
-
-  console.log("url2", url2);
   function revicedContentSearch(contentSearch) {
-    setsearch(contentSearch);
-    let urls = `${URL_PRODUCT}?`;
-    if (contentSearch !== "" && valuetypefilter === "") {
-      setUrl(
-        `${urls}name_like=${contentSearch}&categories_like=${filter}&${typefilters}&${brandsfilters}`
-      );
-      setUrl2(`${urls}name_like=${contentSearch}&categories_like=${filter}`);
-    } else {
-      setUrl(
-        `${urls}name_like=${contentSearch}&categories_like=${filter}${typefilters}&${brandsfilters}`
-      );
-      setUrl2(`${urls}name_like=${contentSearch}&categories_like=${filter}`);
+    setfilter({ ...filter, name_like: contentSearch });
+  }
+  function revicedPrice(min, max) {
+    let price = {};
+    if (min !== "") {
+      price = { price_gte: min };
     }
+    if (max !== "") {
+      price = { ...price, price_lte: max };
+    }
+    setfilter({ ...filter, ...price });
+  }
+
+  function revicedRating(rating, status) {
+    setfilter({ ...filter, rating_gte: rating });
   }
 
   function revicedTypeFilter(typeFilter, status) {
-    let typecc = "";
-    let urls = `${URL_PRODUCT}?name_like=${search}&categories_like=${filter}&${brandsfilters}`;
-    setstatustype(status);
-    if (status === true) {
-      valuetypefilter.push(typeFilter);
-      setvaluetypefilter([...valuetypefilter]);
+    let Type = filter.type || [];
+    if (status) {
+      Type.push(typeFilter);
+      setfilter({ ...filter, type: Type });
     } else {
-      let index = valuetypefilter.findIndex((item) => item === typeFilter);
-      valuetypefilter.splice(index, 1);
-      setvaluetypefilter([...valuetypefilter]);
+      let index = filter.type.findIndex((item) => item === typeFilter);
+      Type.splice(index, 1);
+      setfilter({ ...filter, type: Type });
     }
-    valuetypefilter.forEach((item, index) => {
-      typecc += `type=${item}&`;
-    });
-    settypefilters(typecc);
-    setUrl(`${urls}&${typecc}`);
   }
 
   function revicedContentFilter(contentFilter, status, key) {
-    console.log(typefilters);
-    let urls = `${URL_PRODUCT}?`;
-    setidactive(key);
+    setfilter({ ...filter, categories_like: contentFilter });
+  }
+
+  console.log(filter);
+  function revicedBrandFilter(brandFilter, status) {
+    let Brand = filter.brand || [];
     if (status) {
-      if (contentFilter !== "") {
-        setfilter(contentFilter);
-        setUrl(
-          `${urls}categories_like=${contentFilter}&name_like=${search}&${typefilters}`
-        );
-        setUrl2(`${urls}categories_like=${contentFilter}&name_like=${search}`);
-      }
+      Brand.push(brandFilter);
+      setfilter({ ...filter, brand: Brand });
     } else {
-      setfilter("");
-      setUrl(`${urls}&name_like=${search}${typefilters}`);
-      setUrl2(`${urls}&name_like=${search}&`);
-      console.log(`${urls}&name_like=${search}${typefilters}`);
+      let index = filter.brand.findIndex((item) => item === brandFilter);
+      Brand.splice(index, 1);
+      setfilter({ ...filter, brand: Brand });
     }
   }
 
-  function revicedBrandFilter(brandFilter, status) {
-    let brandcc = "";
-    let urls = `${URL_PRODUCT}?name_like=${search}&categories_like=${filter}${typefilters}&`;
-    setstatustype(status);
-    if (status === true) {
-      valuebrandfilter.push(brandFilter);
-      setvaluetypefilter([...valuebrandfilter]);
-    } else {
-      let index = valuebrandfilter.findIndex((item) => item === brandFilter);
-      valuebrandfilter.splice(index, 1);
-      setvaluebrandfilter([...valuebrandfilter]);
-    }
-    valuebrandfilter.forEach((item, index) => {
-      brandcc += `brand=${item}`;
-    });
-    setbrandsfilters(brandcc);
-    setUrl(`${urls}${brandcc}`);
+  function revicedSort(sort) {
+    setfilter({ ...filter, _sort: "price", _order: sort });
   }
+
+  let url = queryString.stringify(filter);
   return (
     <>
       <Header revicedContentSearch={revicedContentSearch} />
       <BodyPage
         revicedTypeFilter={revicedTypeFilter}
         url={url}
-        url2={url2}
-        revicedContentFilter={revicedContentFilter}
-        idactive={idactive}
-        search={search}
         filter={filter}
-        statustype={statustype}
-        valuetypefilter={valuetypefilter}
+        revicedContentFilter={revicedContentFilter}
         revicedBrandFilter={revicedBrandFilter}
+        revicedRating={revicedRating}
+        revicedPrice={revicedPrice}
+        clearFilter={clearFilter}
+        revicedSort={revicedSort}
       />
     </>
   );
