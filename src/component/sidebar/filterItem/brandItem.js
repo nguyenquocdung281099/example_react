@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
+import React from "react";
 
 export default function BrandFilterItem(props) {
-  let [checked, setchecked] = useState(false);
+  const [checked, setchecked] = useState(false);
+  
   function CheckedInput() {
     if (!checked) {
-      props.revicedBrandFilter(props.brand.name, !checked);
+      props.handleBrandFilter(props.brand.name, !checked);
     } else {
-      props.revicedBrandFilter(props.brand.name, !checked);
+      props.handleBrandFilter(props.brand.name, !checked);
     }
     setchecked(!checked);
   }

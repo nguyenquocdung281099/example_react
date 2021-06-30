@@ -1,52 +1,19 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
 import BrandFilterItem from "../filterItem/brandItem";
-import queryString from "query-string";
+import { getBrand } from "../function";
+import React from "react";
 
 export default function BrandFilter(props) {
-  let [valueSearchBrand, setvaluesearchBrand] = useState("");
+  let [valueSearchBrand, setValuesearchBrand] = useState("");
   let [Brand, setBrand] = useState([]);
 
   function handleSearchBrand(e) {
-    setvaluesearchBrand(e.target.value);
-    console.log(e.target.value);
+    setValuesearchBrand(e.target.value);
   }
 
-  function checkHave(array, value) {
-    return array.findIndex((item) =>
-      item.name ? item.name === value : item === value
-    );
-  }
+  const { filter } = props;
   useEffect(() => {
-    async function fetchdata() {
-      let filter = { ...props.filter };
-      if (filter.brand) {
-        delete filter.brand;
-      }
-      let param = queryString.stringify(filter);
-      let url = `http://localhost:8000/api/product?${param}&`;
-      let data = await axios.get(url);
-      data = data.data;
-      let brand = [];
-      data.forEach((itemd) => {
-        let item = {};
-        if (checkHave(brand, itemd.brand) === -1) {
-          item = { name: itemd.brand, count: 1 };
-          brand.push(item);
-        } else {
-          brand[checkHave(brand, itemd.brand)].count += 1;
-        }
-      });
-      if (valueSearchBrand !== "") {
-        brand = brand.filter(
-          (item) => item.name.indexOf(valueSearchBrand) !== -1
-        );
-      }
-      brand.sort((a, b) => b.count - a.count);
-      brand = brand.filter((item, key) => key < 5);
-      setBrand(brand);
-    }
-    fetchdata();
+    getBrand(filter, setBrand, valueSearchBrand);
     // eslint-disable-next-line
   }, [props.filter, valueSearchBrand]);
   return (
@@ -56,12 +23,12 @@ export default function BrandFilter(props) {
         value={valueSearchBrand}
         onChange={handleSearchBrand}
       />
-      {Brand.map((item, index) => (
+      {Brand.map((item) => (
         <BrandFilterItem
           filter={props.filter}
           brand={item}
-          key={index}
-          revicedBrandFilter={props.revicedBrandFilter}
+          key={`brand-${item.name}`}
+          handleBrandFilter={props.handleBrandFilter}
         />
       ))}
     </>

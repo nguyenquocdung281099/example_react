@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
+import React from "react";
 
 export default function TypeFilterItem(props) {
   let [checked, setchecked] = useState(false);
   function CheckedInput() {
     if (!checked) {
-      props.revicedTypeFilter(props.type.name, !checked);
+      props.handleTypeFilter(props.type.name, !checked);
     } else {
-      props.revicedTypeFilter(props.type.name, !checked);
+      props.handleTypeFilter(props.type.name, !checked);
     }
     setchecked(!checked);
   }

@@ -1,4 +1,5 @@
-import Sidebar from "../sidebar/sidebar";
+import React from "react";
+import Sidebar from "../sidebar/sideBar";
 import ContainerProduct from "./ContainerProduct";
 export default function BodyPage(props) {
   return (
@@ -8,13 +9,13 @@ export default function BodyPage(props) {
           <Sidebar
             url2={props.url2}
             url={props.url}
-            revicedContentFilter={props.revicedContentFilter}
+            handleContentFilter={props.handleContentFilter}
             filter={props.filter}
-            revicedTypeFilter={props.revicedTypeFilter}
+            handleTypeFilter={props.handleTypeFilter}
             valuetypefilter={props.valuetypefilter}
-            revicedBrandFilter={props.revicedBrandFilter}
-            revicedRating={props.revicedRating}
-            revicedPrice={props.revicedPrice}
+            handleBrandFilter={props.handleBrandFilter}
+            handleRating={props.handleRating}
+            handlePrice={props.handlePrice}
             clearFilter={props.clearFilter}
           />
         </div>
@@ -22,7 +23,7 @@ export default function BodyPage(props) {
         <ContainerProduct
           url={props.url}
           contentSearch={props.contentSearch}
-          revicedSort={props.revicedSort}
+          handleSort={props.handleSort}
         />
       </div>
     </>

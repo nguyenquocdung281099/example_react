@@ -1,8 +1,8 @@
 import { useState } from "react";
-import ItemPriceFilter from "../filterItem/itempricefilter";
+import ItemPriceFilter from "../filterItem/itemPriceFilter";
+import React from "react";
 
 export default function PriceFilter(props) {
-  
   const [min, setMin] = useState();
   const [max, setMax] = useState();
 
@@ -28,7 +28,7 @@ export default function PriceFilter(props) {
   ];
 
   function filterPrice() {
-    props.revicedPrice(min, max);
+    props.handlePrice(min, max);
     setMax("");
     setMin("");
   }
@@ -36,16 +36,18 @@ export default function PriceFilter(props) {
   function setMinmax(min, max) {
     setMin(min);
     setMax(max);
-    props.revicedPrice(min, max);
+    props.handlePrice(min, max);
   }
-
-  let data = price.map((item, index) => (
-    <ItemPriceFilter item={item} key={index} setMinmax={setMinmax} />
-  ));
 
   return (
     <ul className="pricefilter">
-      {data}
+      {price.map((item, index) => (
+        <ItemPriceFilter
+          item={item}
+          key={`price-${index}`}
+          setMinmax={setMinmax}
+        />
+      ))}
       <div className="d-flex">
         <label htmlFor="minNumber">$</label>
         <input

@@ -1,10 +1,11 @@
 import { useState } from "react";
+import React from "react";
 
 export default function Header(props) {
   let [contentSearch, setContentSearch] = useState("");
 
   function Search() {
-    props.revicedContentSearch(contentSearch);
+    props.handleContentSearch(contentSearch);
   }
   return (
     <nav className="navbar navbar-dark bg-dark navbar-expand-lg fixed-top">

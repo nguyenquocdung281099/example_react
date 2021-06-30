@@ -1,8 +1,10 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import ItemProduct from "./ItemProduct";
+import React from "react";
 import { Pagination } from "antd";
 import "antd/dist/antd.css";
+
 export default function ContainerProduct(props) {
   const [product, setproduct] = useState([]);
   const [pagination, setPagination] = useState({
@@ -19,17 +21,11 @@ export default function ContainerProduct(props) {
       .then(function (response) {
         setproduct(response.data.data);
         setPagination(response.data.pagination);
-        console.log(props.url);
       })
       .catch(function (error) {
         console.log(error);
       });
   }, [pagination._page, pagination._limit, props.url]);
-
-  let datas = [];
-  datas = product.map((item, index) => {
-    return <ItemProduct key={index} item={item} />;
-  });
 
   function onchangePagi(number, size) {
     setPagination({
@@ -42,7 +38,7 @@ export default function ContainerProduct(props) {
     <div className="col-9 container_body mt-5 pt-5">
       <select
         onChange={(e) => {
-          props.revicedSort(e.target.value);
+          props.handleSort(e.target.value);
         }}
       >
         <option value="" selected>
@@ -57,7 +53,11 @@ export default function ContainerProduct(props) {
         <h5>có {pagination._totalRows} sản phẩm</h5>
       )}
 
-      <div className="d-flex flex-wrap">{datas}</div>
+      <div className="d-flex flex-wrap">
+        {product.map((item, index) => {
+          return <ItemProduct key={`product-${index}`} item={item} />;
+        })}
+      </div>
       {product.length !== 0 && (
         <Pagination
           defaultCurrent={pagination._page}

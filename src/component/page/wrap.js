@@ -2,18 +2,19 @@ import Header from "./header";
 import BodyPage from "./bodyPage";
 import { useState } from "react";
 import queryString from "query-string";
+import React from "react";
 
 export default function Wrap() {
-  const [filter, setfilter] = useState({});
+  const [filter, setFilter] = useState({});
 
   function clearFilter() {
-    setfilter({});
+    setFilter({});
   }
 
-  function revicedContentSearch(contentSearch) {
-    setfilter({ ...filter, name_like: contentSearch });
+  function handleContentSearch(contentSearch) {
+    setFilter({ ...filter, name_like: contentSearch });
   }
-  function revicedPrice(min, max) {
+  function handlePrice(min, max) {
     let price = {};
     if (min !== "") {
       price = { price_gte: min };
@@ -21,60 +22,59 @@ export default function Wrap() {
     if (max !== "") {
       price = { ...price, price_lte: max };
     }
-    setfilter({ ...filter, ...price });
+    setFilter({ ...filter, ...price });
   }
 
-  function revicedRating(rating, status) {
-    setfilter({ ...filter, rating_gte: rating });
+  function handleRating(rating) {
+    setFilter({ ...filter, rating_gte: rating });
   }
 
-  function revicedTypeFilter(typeFilter, status) {
+  function handleTypeFilter(typeFilter, status) {
     let Type = filter.type || [];
     if (status) {
       Type.push(typeFilter);
-      setfilter({ ...filter, type: Type });
+      setFilter({ ...filter, type: Type });
     } else {
       let index = filter.type.findIndex((item) => item === typeFilter);
       Type.splice(index, 1);
-      setfilter({ ...filter, type: Type });
+      setFilter({ ...filter, type: Type });
     }
   }
 
-  function revicedContentFilter(contentFilter, status, key) {
-    setfilter({ ...filter, categories_like: contentFilter });
+  function handleContentFilter(contentFilter) {
+    setFilter({ ...filter, categories_like: contentFilter });
   }
 
-  console.log(filter);
-  function revicedBrandFilter(brandFilter, status) {
-    let Brand = filter.brand || [];
+  function handleBrandFilter(brandFilter, status) {
+    let brand = filter.brand || [];
     if (status) {
-      Brand.push(brandFilter);
-      setfilter({ ...filter, brand: Brand });
+      brand.push(brandFilter);
+      setFilter({ ...filter, brand: brand });
     } else {
       let index = filter.brand.findIndex((item) => item === brandFilter);
-      Brand.splice(index, 1);
-      setfilter({ ...filter, brand: Brand });
+      brand.splice(index, 1);
+      setFilter({ ...filter, brand: brand });
     }
   }
 
-  function revicedSort(sort) {
-    setfilter({ ...filter, _sort: "price", _order: sort });
+  function handleSort(sort) {
+    setFilter({ ...filter, _sort: "price", _order: sort });
   }
 
   let url = queryString.stringify(filter);
   return (
     <>
-      <Header revicedContentSearch={revicedContentSearch} />
+      <Header handleContentSearch={handleContentSearch} />
       <BodyPage
-        revicedTypeFilter={revicedTypeFilter}
+        handleTypeFilter={handleTypeFilter}
         url={url}
         filter={filter}
-        revicedContentFilter={revicedContentFilter}
-        revicedBrandFilter={revicedBrandFilter}
-        revicedRating={revicedRating}
-        revicedPrice={revicedPrice}
+        handleContentFilter={handleContentFilter}
+        handleBrandFilter={handleBrandFilter}
+        handleRating={handleRating}
+        handlePrice={handlePrice}
         clearFilter={clearFilter}
-        revicedSort={revicedSort}
+        handleSort={handleSort}
       />
     </>
   );

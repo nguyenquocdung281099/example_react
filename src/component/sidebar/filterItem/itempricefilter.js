@@ -1,36 +1,39 @@
+import React from "react";
+
 export default function ItemPriceFilter(props) {
   let datas = "";
-  if (props.item.min && props.item.max) {
+  const { min, max } = props.item;
+  if (min && max) {
     datas = (
       <li
         className="itemfilterprice"
         onClick={() => {
-          props.setMinmax(props.item.min, props.item.max);
+          props.setMinmax(min, max);
         }}
       >
-        ${props.item.min}-{props.item.max}
+        ${min}-{max}
       </li>
     );
-  } else if (props.item.min && !props.item.max) {
+  } else if (min && !max) {
     datas = (
       <li
         className="itemfilterprice"
         onClick={() => {
-          props.setMinmax(props.item.min);
+          props.setMinmax(min);
         }}
       >
-        &ge; ${props.item.min}
+        &ge; ${min}
       </li>
     );
-  } else if (!props.item.min && props.item.max) {
+  } else if (!min && max) {
     datas = (
       <li
         className="itemfilterprice"
         onClick={() => {
-          props.setMinmax(props.item.max);
+          props.setMinmax(max);
         }}
       >
-        &le; ${props.item.max}
+        &le; ${max}
       </li>
     );
   }

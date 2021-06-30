@@ -1,34 +1,37 @@
 import { useEffect, useState } from "react";
+import React from "react";
 import ItemNav from "../filterItem/itemNav";
 export default function NavList(props) {
-  let [show, setshow] = useState(false);
+  const [show, setshow] = useState(false);
+  const { data, filter, id, handleContentFilter, idactive } = props;
   function handleshow() {
     setshow(!show);
   }
   useEffect(() => {
-    if (Object.keys(props.filter).length === 0) {
+    if (Object.keys(filter).length === 0) {
       setshow(false);
     }
-  }, [props.filter]);
+  }, [filter]);
   return (
     <div className="col-12">
       <ItemNav
-        category={props.data.name}
+        category={data.name}
         handleshow={handleshow}
-        id={props.id}
-        revicedContentFilter={props.revicedContentFilter}
-        idactive={props.idactive}
+        id={id}
+        handleContentFilter={handleContentFilter}
+        idactive={idactive}
       />
-      {props.data.lv1 &&
-        props.data.lv1.map((item, index) => {
+      {data.lv1 &&
+        data.lv1.map((item, index) => {
           return (
             show === true && (
               <NavList
-                filter={props.filter}
-                idactive={props.idactive}
+                filter={filter}
+                idactive={idactive}
                 data={item}
                 id={index}
-                revicedContentFilter={props.revicedContentFilter}
+                key={`navlv1-${index}`}
+                handleContentFilter={handleContentFilter}
               />
             )
           );

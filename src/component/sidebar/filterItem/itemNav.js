@@ -1,19 +1,28 @@
 import { useState } from "react";
+import React from "react";
 
 export default function ItemNav(props) {
-  let [show, setshow] = useState(true);
+  const [show, setshow] = useState(true);
+  const { category, handleContentFilter, handleshow } = props;
+
   return (
     <li className="itemNav">
       <a
         href="/"
         onClick={(e) => {
           e.preventDefault();
-          props.handleshow();
-          props.revicedContentFilter(props.category, show, props.id);
+          handleshow();
+          if (show) {
+            handleContentFilter(category);
+          } else {
+            handleContentFilter("");
+          }
+          console.log(show);
+
           setshow(!show);
         }}
       >
-        &#62; {props.category}
+        &#62; {category}
       </a>
     </li>
   );
