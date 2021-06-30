@@ -9,7 +9,13 @@ export default function ItemNav(props) {
         onClick={(e) => {
           e.preventDefault();
           props.handleshow();
-          props.revicedContentFilter(props.category, show, props.id);
+          if (show) {
+            props.revicedContentFilter(props.category);
+          } else {
+            props.revicedContentFilter("");
+          }
+          console.log(show);
+
           setshow(!show);
         }}
       >
