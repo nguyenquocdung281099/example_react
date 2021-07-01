@@ -1,52 +1,41 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
-import queryString from "query-string";
 import TypeFilterItem from "../filterItem/typefilteritem";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { getfiltertype } from "../../../redux/action";
 export default function Typefilter(props) {
-  let [type, settype] = useState([]);
-
-  function checkHave(array, value) {
+  function checkIndex(array, value) {
     return array.findIndex((item) =>
       item.name ? item.name === value : item === value
     );
   }
 
+  const state = useSelector((state) => state.ProductReducer);
+  let data = state.datatype;
+  let dispatch = useDispatch();
+  let filter = state.filter;
   useEffect(() => {
-    async function fetchdata() {
-      let filter = { ...props.filter };
-      if (filter.type) {
-        delete filter.type;
-      }
-      let param = queryString.stringify(filter);
-      let url = `http://localhost:8000/api/product?${param}&`;
-      console.log(url);
-      let data = await axios.get(url);
-      data = data.data;
-      let Type = [];
-      data.forEach((itemd) => {
-        let item = {};
-        if (checkHave(Type, itemd.type) === -1) {
-          item = { name: itemd.type, count: 1 };
-          Type.push(item);
-        } else {
-          Type[checkHave(Type, itemd.type)].count += 1;
-        }
-      });
-      Type.sort((a, b) => b.count - a.count);
-      Type = Type.filter((item, key) => key < 5);
-      settype(Type);
+    let filters = { ...filter };
+    if (filters.type) {
+      delete filters.type;
     }
-    fetchdata();
-    // eslint-disable-next-line
-  }, [props.filter]);
-  let datas = type.map((item, key) => (
-    <TypeFilterItem
-      revicedTypeFilter={props.revicedTypeFilter}
-      type={item}
-      key={key}
-      search={props.search}
-      filter={props.filter}
-    />
+    dispatch(getfiltertype(filters));
+  }, [filter]);
+
+  let Type = [];
+  data.forEach((itemd) => {
+    let item = {};
+    if (checkIndex(Type, itemd.type) === -1) {
+      item = { name: itemd.type, count: 1 };
+      Type.push(item);
+    } else {
+      Type[checkIndex(Type, itemd.type)].count += 1;
+    }
+  });
+  Type.sort((a, b) => b.count - a.count);
+  Type = Type.filter((item, key) => key < 5);
+
+  let datas = Type.map((item, key) => (
+    <TypeFilterItem type={item} key={item.name} />
   ));
   return <div className="p-3">{datas}</div>;
 }

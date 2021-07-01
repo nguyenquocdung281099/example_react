@@ -1,56 +1,55 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import ItemProduct from "./ItemProduct";
 import { Pagination } from "antd";
 import "antd/dist/antd.css";
-export default function ContainerProduct(props) {
-  const [product, setproduct] = useState([]);
-  const [pagination, setPagination] = useState({
-    _limit: 10,
-    _page: 1,
-    _totalRows: 19,
-  });
+import { useDispatch, useSelector } from "react-redux";
+import { changefilter, getdata } from "../../redux/action";
+
+export default function ContainerProduct() {
+  const product = useSelector((state) => state.ProductReducer);
+  const filter = product.filter;
+  let pagination = product.pagination;
+  const dispatch = useDispatch();
+  let filters = {
+    ...filter,
+    _page: pagination._page,
+    _limit: pagination._limit,
+  };
 
   useEffect(() => {
-    axios
-      .get(
-        `http://localhost:8000/api/product?${props.url}&_page=${pagination._page}&_limit=${pagination._limit}`
-      )
-      .then(function (response) {
-        setproduct(response.data.data);
-        setPagination(response.data.pagination);
-        console.log(props.url);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-  }, [pagination._page, pagination._limit, props.url]);
+    dispatch(getdata(filters));
+  }, [filter]);
 
   let datas = [];
-  datas = product.map((item, index) => {
+  datas = product.Product.map((item, index) => {
     return <ItemProduct key={index} item={item} />;
   });
 
   function onchangePagi(number, size) {
-    setPagination({
-      ...pagination,
-      _limit: size,
-      _page: number,
-    });
+    pagination = { ...pagination, _page: number, _totalRows: size };
+    filters = {
+      ...filter,
+      _page: pagination._page,
+      _limit: pagination._limit,
+    };
+    dispatch(getdata(filters));
   }
   return (
     <div className="col-9 container_body mt-5 pt-5">
       <select
         onChange={(e) => {
-          props.revicedSort(e.target.value);
+          dispatch(
+            changefilter({ ...filter, _sort: "price", _order: e.target.value })
+          );
         }}
       >
         <option value="" selected>
-          sort
+          choose method sort
         </option>
         <option value="asc">price asc</option>
-        <option value="desc">price desc</option>
+        <option value="desc">pricen desc</option>
       </select>
+      <div class="lds-hourglass" style={{ display: product.loading }}></div>
       {product.length === 0 ? (
         <h1>không có sản phẩm nào </h1>
       ) : (

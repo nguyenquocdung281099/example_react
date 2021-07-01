@@ -1,0 +1,15 @@
+export const GET_DATA = "GET_DATA";
+export const GET_FILTER = "GET_FILTER";
+export const GET_FILTER_TYPE = "GET_FILTER_TYPE";
+export const GET_FILTER_BRAND = "GET_FILTER_BRAND";
+export const GET_FILTER_RAITING = "GET_FILTER_RAITING";
+
+export const GET_DATA_SC = "GET_DATA_SC";
+export const GET_FILTER_SC = "GET_FILTER_SC";
+export const GET_FILTER_TYPE_SC = "GET_FILTER_TYPE_SC";
+export const GET_FILTER_BRAND_SC = "GET_FILTER_BRAND_SC";
+export const GET_FILTER_RAITING_SC = "GET_FILTER_RAITING_SC";
+
+export const CHANGE_FILTER = "CHANGE_FILTER";
+export const CHANGE_PAGE = "CHANGE_PAGE";
+export const LOADING = "LOADING";

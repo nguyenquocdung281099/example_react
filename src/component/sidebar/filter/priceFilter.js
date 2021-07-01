@@ -1,15 +1,14 @@
 import { useState } from "react";
 import ItemPriceFilter from "../filterItem/itempricefilter";
+import { useDispatch, useSelector } from "react-redux";
+import { changefilter } from "../../../redux/action";
 
 export default function PriceFilter(props) {
-  
   const [min, setMin] = useState();
   const [max, setMax] = useState();
-
+  const filter = useSelector((state) => state.ProductReducer.filter);
+  const dispatch = useDispatch();
   let price = [
-    {
-      max: 1,
-    },
     {
       min: 1,
       max: 80,
@@ -27,8 +26,19 @@ export default function PriceFilter(props) {
     },
   ];
 
+  function dispatchprice(min, max, filter) {
+    let price = {};
+    if (min !== "") {
+      price = { price_gte: min };
+    }
+    if (max !== "") {
+      price = { ...price, price_lte: max };
+    }
+    price = { ...filter, ...price };
+    dispatch(changefilter(price));
+  }
   function filterPrice() {
-    props.revicedPrice(min, max);
+    dispatchprice(min, max, filter);
     setMax("");
     setMin("");
   }
@@ -36,7 +46,7 @@ export default function PriceFilter(props) {
   function setMinmax(min, max) {
     setMin(min);
     setMax(max);
-    props.revicedPrice(min, max);
+    dispatchprice(min, max, filter);
   }
 
   let data = price.map((item, index) => (

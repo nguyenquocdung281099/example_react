@@ -1,7 +1,11 @@
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { changefilter } from "../../../redux/action";
 
 export default function ItemNav(props) {
-  let [show, setshow] = useState(true);
+  const [show, setshow] = useState(true);
+  let filter = useSelector((state) => state.ProductReducer.filter);
+  const dispatch = useDispatch();
   return (
     <li className="itemNav">
       <a
@@ -10,12 +14,11 @@ export default function ItemNav(props) {
           e.preventDefault();
           props.handleshow();
           if (show) {
-            props.revicedContentFilter(props.category);
+            filter = { ...filter, categories_like: props.category };
+            dispatch(changefilter(filter));
           } else {
-            props.revicedContentFilter("");
+            dispatch(changefilter(""));
           }
-          console.log(show);
-
           setshow(!show);
         }}
       >

@@ -1,36 +1,30 @@
 import { useEffect, useState } from "react";
 import ItemNav from "../filterItem/itemNav";
+import { useSelector } from "react-redux";
+
 export default function NavList(props) {
   let [show, setshow] = useState(false);
   function handleshow() {
     setshow(!show);
   }
+  let filter = useSelector((state) => state.ProductReducer.filter);
   useEffect(() => {
-    if (Object.keys(props.filter).length === 0) {
+    console.log("helo", filter);
+    if (Object.keys(filter).length === 0) {
       setshow(false);
     }
-  }, [props.filter]);
+  }, [filter]);
   return (
     <div className="col-12">
       <ItemNav
         category={props.data.name}
         handleshow={handleshow}
         id={props.id}
-        revicedContentFilter={props.revicedContentFilter}
-        idactive={props.idactive}
       />
       {props.data.lv1 &&
         props.data.lv1.map((item, index) => {
           return (
-            show === true && (
-              <NavList
-                filter={props.filter}
-                idactive={props.idactive}
-                data={item}
-                id={index}
-                revicedContentFilter={props.revicedContentFilter}
-              />
-            )
+            show === true && <NavList data={item} id={index} key={index} />
           );
         })}
     </div>
