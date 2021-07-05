@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { changefilter } from "../../../redux/action";
+import { changeFilter } from "../../../redux/action";
 
 export default function TypeFilterItem(props) {
   let [checked, setchecked] = useState(false);
@@ -16,7 +16,7 @@ export default function TypeFilterItem(props) {
       Type.splice(index, 1);
     }
     filter = { ...filter, type: Type };
-    dispatch(changefilter(filter));
+    dispatch(changeFilter(filter));
     setchecked(!checked);
   }
   useEffect(() => {

@@ -9,8 +9,8 @@ const stateInit = {
   },
   filter: {},
   dataGetFilter: [],
-  datatype: [],
-  databrand: [],
+  dataType: [],
+  dataBrand: [],
   dataRating: [],
   loading: "block",
 };
@@ -40,25 +40,21 @@ export default function ProductReducer(state = stateInit, action) {
       return { ...newState };
 
     case actiontype.GET_FILTER_TYPE_SC:
-      newState = { ...newState,
-         datatype: action.payload };
+      newState = { ...newState, dataType: action.payload };
       return { ...newState };
 
     case actiontype.GET_FILTER_BRAND_SC:
-      newState = { ...newState,
-         databrand: action.payload };
+      newState = { ...newState, dataBrand: action.payload };
       return { ...newState };
 
     case actiontype.GET_FILTER_RAITING_SC:
-      newState = { ...newState,
-         dataRating: action.payload };
+      newState = { ...newState, dataRating: action.payload };
       return { ...newState };
 
     case actiontype.LOADING:
-      newState = { ...newState,
-         loading: action.payload };
+      newState = { ...newState, loading: action.payload };
       return { ...newState };
-      
+
     default:
       return state;
   }

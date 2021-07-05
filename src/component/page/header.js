@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { changefilter } from "../../redux/action";
+import { changeFilter } from "../../redux/action";
 
 export default function Header() {
   let [search, setSearch] = useState("");
@@ -19,7 +19,7 @@ export default function Header() {
       clearTimeout(typeingTimeOutRef.current);
     }
     typeingTimeOutRef.current = setTimeout(() => {
-      dispatch(changefilter({ ...filter, name_like: e.target.value }));
+      dispatch(changeFilter({ ...filter, name_like: e.target.value }));
     }, 500);
   }
   return (

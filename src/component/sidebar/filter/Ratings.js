@@ -1,10 +1,10 @@
 import { useEffect } from "react";
 import ItemRaiting from "../filterItem/itemRating";
 import { useDispatch, useSelector } from "react-redux";
-import { getfilterrating } from "../../../redux/action";
-
+import { getFilterRating } from "../../../redux/action";
+import { getRatings } from "../funtion";
 export default function Ratings(props) {
-  function checkIndex(array, value) {
+  function getIndex(array, value) {
     return array.findIndex((item) => item.rating === value);
   }
 
@@ -12,38 +12,19 @@ export default function Ratings(props) {
   const data = state.dataRating;
   const filter = state.filter;
   const dispatch = useDispatch();
-  let Ratings = [];
-  data.forEach((itemd) => {
-    let item = {};
-    if (checkIndex(Ratings, itemd.rating) === -1) {
-      item = { rating: itemd.rating, count: 0 };
-      Ratings.push(item);
-    }
-  });
-  Ratings.forEach((item) => {
-    data.forEach((itemdata) => {
-      if (item.rating <= itemdata.rating) {
-        item.count += 1;
-      }
-    });
-  });
-  Ratings = Ratings.sort((a, b) => -a.rating + b.rating);
-  Ratings = Ratings.filter((item, index) => index > 0);
+
   useEffect(() => {
     let rait = { ...filter };
     if (rait.rating_gte) {
       delete rait.rating_gte;
     }
-    dispatch(getfilterrating(rait));
-  }, [filter]);
-
+    dispatch(getFilterRating(rait));
+  }, [filter, dispatch]);
+  const ratings = getRatings(data, getIndex);
   return (
     <ul>
-      {Ratings.map((item, index) => (
-        <ItemRaiting
-          item={item}
-          key={index}
-        />
+      {ratings.map((item, index) => (
+        <ItemRaiting item={item} key={index} />
       ))}
     </ul>
   );

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { changefilter } from "../../../redux/action";
+import { changeFilter } from "../../../redux/action";
 
 export default function ItemNav(props) {
   const [show, setshow] = useState(true);
@@ -15,9 +15,9 @@ export default function ItemNav(props) {
           props.handleshow();
           if (show) {
             filter = { ...filter, categories_like: props.category };
-            dispatch(changefilter(filter));
+            dispatch(changeFilter(filter));
           } else {
-            dispatch(changefilter({ ...filter, categories_like: "" }));
+            dispatch(changeFilter({ ...filter, categories_like: "" }));
           }
           setshow(!show);
         }}

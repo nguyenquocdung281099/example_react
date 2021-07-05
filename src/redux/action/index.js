@@ -1,77 +1,77 @@
 import * as type from "./const_action";
 
-export const getdata = (filter) => {
+export const getData = (filter) => {
   return {
     type: type.GET_DATA,
     filter,
   };
 };
-export const getdatsc = (product) => {
+export const getDatsc = (product) => {
   return {
     type: type.GET_DATA_SC,
     payload: product,
   };
 };
-export const changefilter = (filter) => {
+export const changeFilter = (filter) => {
   return {
     type: type.CHANGE_FILTER,
     payload: filter,
   };
 };
 
-export const getfilter = (param) => {
+export const getFilter = (param) => {
   return {
     type: type.GET_FILTER,
     payload: param,
   };
 };
-export const getfilterSC = (filter) => {
+export const getFilterSC = (filter) => {
   return {
     type: type.GET_FILTER_SC,
     payload: filter,
   };
 };
 
-export const getfiltertype = (filter) => {
+export const getFilterType = (filter) => {
   return {
     type: type.GET_FILTER_TYPE,
     payload: filter,
   };
 };
-export const getfiltertypeSC = (filter) => {
+export const getFilterTypeSC = (filter) => {
   return {
     type: type.GET_FILTER_TYPE_SC,
     payload: filter,
   };
 };
 
-export const getfilterbrand = (filter) => {
+export const getFilterBrand = (filter) => {
   return {
     type: type.GET_FILTER_BRAND,
     payload: filter,
   };
 };
-export const getfilterbrandSC = (filter) => {
+export const getFilterBrandSC = (filter) => {
   return {
     type: type.GET_FILTER_BRAND_SC,
     payload: filter,
   };
 };
 
-export const getfilterrating = (filter) => {
+export const getFilterRating = (filter) => {
   return {
     type: type.GET_FILTER_RAITING,
     payload: filter,
   };
 };
-export const getfilterratingSC = (filter) => {
+export const getFilterRatingSC = (filter) => {
   return {
     type: type.GET_FILTER_RAITING_SC,
     payload: filter,
   };
 };
 
-export const setloading = (string) => {
+export const setLoading = (string) => {
   return {
     type: type.LOADING,
     payload: string,

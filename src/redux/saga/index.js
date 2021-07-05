@@ -1,5 +1,5 @@
 import axios from "axios";
-import { put, call, takeLatest } from "redux-saga/effects";
+import { put, call, takeLatest, delay } from "redux-saga/effects";
 import queryString from "query-string";
 
 import * as func_action from "../action";
@@ -18,10 +18,11 @@ function* getProduct(action) {
   const filter = queryString.stringify(action.filter);
   const url = `${URL_PRODUCT}${filter}`;
   try {
+    yield delay(1000);
     const product = yield call(get, url);
-    yield put(func_action.setloading("none"));
+    yield put(func_action.setLoading("none"));
     if (product.status === 200) {
-      yield put(func_action.getdatsc(product.data));
+      yield put(func_action.getDatsc(product.data));
     }
   } catch (e) {}
 }
@@ -32,7 +33,7 @@ function* getFilters(action) {
   try {
     const datas = yield call(get, url);
 
-    yield put(func_action.getfilterSC(datas.data));
+    yield put(func_action.getFilterSC(datas.data));
   } catch (e) {
     // show toast
   }
@@ -43,7 +44,7 @@ function* getFilterType(action) {
   const url = `${URL_PRODUCT}${filter}`;
   try {
     const datas = yield call(get, url);
-    yield put(func_action.getfiltertypeSC(datas.data));
+    yield put(func_action.getFilterTypeSC(datas.data));
   } catch (e) {
     // show toast
   }
@@ -54,7 +55,7 @@ function* getFilterBrand(action) {
   const url = `${URL_PRODUCT}${filter}`;
   try {
     const datas = yield call(get, url);
-    yield put(func_action.getfilterbrandSC(datas.data));
+    yield put(func_action.getFilterBrandSC(datas.data));
   } catch (e) {
     // show toast
   }
@@ -65,7 +66,7 @@ function* getFilterRating(action) {
   const url = `${URL_PRODUCT}${filter}`;
   try {
     const datas = yield call(get, url);
-    yield put(func_action.getfilterratingSC(datas.data));
+    yield put(func_action.getFilterRatingSC(datas.data));
   } catch (e) {
     // show toast
   }
@@ -74,4 +75,4 @@ function* getFilterRating(action) {
 
 function get(url) {
   return axios.get(url);
-}
+} 

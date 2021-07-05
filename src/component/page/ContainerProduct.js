@@ -3,46 +3,44 @@ import ItemProduct from "./ItemProduct";
 import { Pagination } from "antd";
 import "antd/dist/antd.css";
 import { useDispatch, useSelector } from "react-redux";
-import { changefilter, getdata } from "../../redux/action";
+import { changeFilter, getData } from "../../redux/action";
 
 export default function ContainerProduct() {
-  const product = useSelector((state) => state.ProductReducer);
-  const filter = product.filter;
-  let pagination = product.pagination;
+  const products = useSelector((state) => state.ProductReducer);
+  const filter = products.filter;
+  let pagination = products.pagination;
   const dispatch = useDispatch();
-  let filters = {
-    ...filter,
-    _page: pagination._page,
-    _limit: pagination._limit,
-  };
 
   useEffect(() => {
-    dispatch(getdata(filters));
-  }, [filter, dispatch]);
+    dispatch(
+      getData({ ...filter, _page: pagination._page, _limit: pagination._limit })
+    );
+  }, [filter, dispatch, pagination._page, pagination._limit]);
 
   let datas = [];
-  datas = product.Product.map((item, index) => {
+  datas = products.Product.map((item, index) => {
     return <ItemProduct key={index} item={item} />;
   });
 
-  function onchangePagi(number, size) {
+  function onChangePagi(number, size) {
     pagination = { ...pagination, _page: number, _totalRows: size };
-    filters = {
-      ...filter,
-      _page: pagination._page,
-      _limit: pagination._limit,
-    };
-    dispatch(getdata(filters));
+    dispatch(
+      getData({
+        ...filter,
+        _page: pagination._page,
+        _limit: pagination._limit,
+      })
+    );
   }
   return (
     <div className="col-9 container_body mt-5 pt-5">
       <div className="d-flex">
-        {product.Product.length !== 0 && (
+        {products.Product.length !== 0 && (
           <select
             className="ml-auto"
             onChange={(e) => {
               dispatch(
-                changefilter({
+                changeFilter({
                   ...filter,
                   _sort: "price",
                   _order: e.target.value,
@@ -58,19 +56,15 @@ export default function ContainerProduct() {
           </select>
         )}
       </div>
-      <div class="lds-hourglass" style={{ display: product.loading }}></div>
-      {product.Product.length === 0 ? (
-        <h1>không có sản phẩm nào </h1>
-      ) : (
-        <h5>có {pagination._totalRows} sản phẩm</h5>
-      )}
+      <div class="lds-hourglass" style={{ display: products.loading }}></div>
+      <h5>có {pagination._totalRows} sản phẩm</h5>
 
       <div className="d-flex flex-wrap">{datas}</div>
-      {product.Product.length !== 0 && (
+      {products.Product.length !== 0 && (
         <Pagination
           defaultCurrent={pagination._page}
           total={pagination._totalRows}
-          onChange={onchangePagi}
+          onChange={onChangePagi}
         />
       )}
     </div>

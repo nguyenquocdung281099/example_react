@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { changefilter } from "../../../redux/action";
+import { changeFilter } from "../../../redux/action";
 
 export default function ItemRaiting(props) {
   let data = [];
@@ -14,7 +14,7 @@ export default function ItemRaiting(props) {
   }
   function handleRatingitem(e) {
     let filters = { ...filter, rating_gte: props.item.rating };
-    dispatch(changefilter(filters));
+    dispatch(changeFilter(filters));
   }
 
   return (
