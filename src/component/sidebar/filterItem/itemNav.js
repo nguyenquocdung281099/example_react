@@ -17,10 +17,11 @@ export default function ItemNav(props) {
             filter = { ...filter, categories_like: props.category };
             dispatch(changefilter(filter));
           } else {
-            dispatch(changefilter(""));
+            dispatch(changefilter({ ...filter, categories_like: "" }));
           }
           setshow(!show);
         }}
+        className={filter.categories_like === props.category ? "active" : ""}
       >
         &#62; {props.category}
       </a>

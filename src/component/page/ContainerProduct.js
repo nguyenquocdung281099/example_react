@@ -18,7 +18,7 @@ export default function ContainerProduct() {
 
   useEffect(() => {
     dispatch(getdata(filters));
-  }, [filter]);
+  }, [filter, dispatch]);
 
   let datas = [];
   datas = product.Product.map((item, index) => {
@@ -36,28 +36,37 @@ export default function ContainerProduct() {
   }
   return (
     <div className="col-9 container_body mt-5 pt-5">
-      <select
-        onChange={(e) => {
-          dispatch(
-            changefilter({ ...filter, _sort: "price", _order: e.target.value })
-          );
-        }}
-      >
-        <option value="" selected>
-          choose method sort
-        </option>
-        <option value="asc">price asc</option>
-        <option value="desc">pricen desc</option>
-      </select>
+      <div className="d-flex">
+        {product.Product.length !== 0 && (
+          <select
+            className="ml-auto"
+            onChange={(e) => {
+              dispatch(
+                changefilter({
+                  ...filter,
+                  _sort: "price",
+                  _order: e.target.value,
+                })
+              );
+            }}
+          >
+            <option value="" selected>
+              choose method sort
+            </option>
+            <option value="asc">price asc</option>
+            <option value="desc">pricen desc</option>
+          </select>
+        )}
+      </div>
       <div class="lds-hourglass" style={{ display: product.loading }}></div>
-      {product.length === 0 ? (
+      {product.Product.length === 0 ? (
         <h1>không có sản phẩm nào </h1>
       ) : (
         <h5>có {pagination._totalRows} sản phẩm</h5>
       )}
 
       <div className="d-flex flex-wrap">{datas}</div>
-      {product.length !== 0 && (
+      {product.Product.length !== 0 && (
         <Pagination
           defaultCurrent={pagination._page}
           total={pagination._totalRows}

@@ -86,3 +86,6 @@ li {
     transform: rotate(1800deg);
   }
 }
+a.active {
+  color: rgb(202, 10, 10) !important;
+}

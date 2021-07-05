@@ -20,7 +20,6 @@ export default function TypeFilterItem(props) {
     setchecked(!checked);
   }
   useEffect(() => {
-    console.log("helo", filter);
     if (Object.keys(filter).length === 0) {
       setchecked(false);
     }

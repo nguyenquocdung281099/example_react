@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { changefilter } from "../../redux/action";
 
@@ -6,12 +6,22 @@ export default function Header() {
   let [search, setSearch] = useState("");
   const dispatch = useDispatch();
   const filter = useSelector((state) => state.ProductReducer.filter);
+  const typeingTimeOutRef = useRef(null);
   useEffect(() => {
-    console.log("helo", filter);
     if (Object.keys(filter).length === 0) {
       setSearch("");
     }
   }, [filter]);
+
+  function handleSearch(e) {
+    setSearch(e.target.value);
+    if (typeingTimeOutRef.current) {
+      clearTimeout(typeingTimeOutRef.current);
+    }
+    typeingTimeOutRef.current = setTimeout(() => {
+      dispatch(changefilter({ ...filter, name_like: e.target.value }));
+    }, 500);
+  }
   return (
     <nav className="navbar navbar-dark bg-dark navbar-expand-lg fixed-top">
       <a href="/" className="navbar-brand">
@@ -25,16 +35,12 @@ export default function Header() {
           className="form-control mr-sm-2"
           type="search"
           onChange={(e) => {
-            setSearch(e.target.value);
-            dispatch(changefilter({ ...filter, name_like: e.target.value }));
+            handleSearch(e);
           }}
           value={search}
           placeholder="Search"
           aria-label="Search"
         />
-        <button type="button" className="btn btn-warning" onClick={() => {}}>
-          Search
-        </button>
       </form>
     </nav>
   );

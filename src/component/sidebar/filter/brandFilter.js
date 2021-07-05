@@ -34,10 +34,8 @@ export default function BrandFilter(props) {
   if (valueSearchBrand !== "") {
     brand = brand.filter((item) => item.name.indexOf(valueSearchBrand) !== -1);
   }
+  brand.sort((a, b) => b.count - a.count);
 
-  useEffect(() => {
-    brand.sort((a, b) => b.count - a.count);
-  }, []);
   brand = brand.filter((item, key) => key < 5);
   const dispatch = useDispatch();
   useEffect(() => {

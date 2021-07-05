@@ -1,10 +1,11 @@
+import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
+
 import BrandFilter from "./filter/brandFilter";
 import NavList from "./filter/navlist";
 import Typefilter from "./filter/typefiler";
 import Ratings from "./filter/Ratings";
 import PriceFilter from "./filter/priceFilter";
-import { useDispatch, useSelector } from "react-redux";
 import { changefilter, getfilter } from "../../redux/action";
 
 export default function Sidebar(props) {
@@ -64,7 +65,7 @@ export default function Sidebar(props) {
       delete filters._order;
     }
     dispatch(getfilter(filters));
-  }, [filter]);
+  }, [filter, dispatch]);
 
   let category = categories.filter((item, key) => key < 10);
   datas = category.map((item, index) => {
@@ -78,7 +79,7 @@ export default function Sidebar(props) {
           type="button"
           class="btn btn-danger"
           onClick={() => {
-            dispatch(changefilter(""));
+            dispatch(changefilter({}));
           }}
         >
           Clear Filter

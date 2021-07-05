@@ -19,7 +19,7 @@ export default function Typefilter(props) {
       delete filters.type;
     }
     dispatch(getfiltertype(filters));
-  }, [filter]);
+  }, [filter,dispatch]);
 
   let Type = [];
   data.forEach((itemd) => {

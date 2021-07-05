@@ -9,7 +9,6 @@ export default function NavList(props) {
   }
   let filter = useSelector((state) => state.ProductReducer.filter);
   useEffect(() => {
-    console.log("helo", filter);
     if (Object.keys(filter).length === 0) {
       setshow(false);
     }

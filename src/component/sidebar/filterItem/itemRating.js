@@ -18,7 +18,12 @@ export default function ItemRaiting(props) {
   }
 
   return (
-    <li className="star " onClick={handleRatingitem}>
+    <li
+      className={
+        filter.rating_gte === props.item.rating ? "star active" : "star"
+      }
+      onClick={handleRatingitem}
+    >
       {data} &#38; upto {props.item.count}
     </li>
   );

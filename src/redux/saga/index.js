@@ -1,11 +1,11 @@
 import axios from "axios";
-import { put, call } from "redux-saga/effects";
-import * as action from "../action/const_action";
+import { put, call, takeLatest } from "redux-saga/effects";
 import queryString from "query-string";
-import * as func_action from "../action";
 
+import * as func_action from "../action";
 import { URL_PRODUCT } from "../../const";
-import { takeLatest } from "redux-saga/effects";
+import * as action from "../action/const_action";
+
 export default function* saga() {
   yield takeLatest(action.GET_DATA, getProduct);
   yield takeLatest(action.GET_FILTER, getFilters);
@@ -17,11 +17,8 @@ export default function* saga() {
 function* getProduct(action) {
   const filter = queryString.stringify(action.filter);
   const url = `${URL_PRODUCT}${filter}`;
-  console.log(url);
   try {
     const product = yield call(get, url);
-    console.log("prodyct", product.status);
-
     yield put(func_action.setloading("none"));
     if (product.status === 200) {
       yield put(func_action.getdatsc(product.data));
@@ -34,7 +31,7 @@ function* getFilters(action) {
   const url = `${URL_PRODUCT}${filter}`;
   try {
     const datas = yield call(get, url);
-    console.log(datas);
+
     yield put(func_action.getfilterSC(datas.data));
   } catch (e) {
     // show toast
