@@ -1,9 +1,11 @@
 import { useEffect } from "react";
 import ItemRaiting from "../filterItem/itemRating";
 import { useDispatch, useSelector } from "react-redux";
+import React from "react";
 import { getFilterRating } from "../../../redux/action";
-import { getRatings } from "../funtion";
-export default function Ratings(props) {
+import { getRatings } from "../function";
+
+export default function Ratings() {
   function getIndex(array, value) {
     return array.findIndex((item) => item.rating === value);
   }
@@ -20,6 +22,7 @@ export default function Ratings(props) {
     }
     dispatch(getFilterRating(rait));
   }, [filter, dispatch]);
+
   const ratings = getRatings(data, getIndex);
   return (
     <ul>

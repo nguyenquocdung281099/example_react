@@ -1,24 +1,27 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { changeFilter } from "../../../redux/action";
+import React from "react";
 
 export default function BrandFilterItem(props) {
-  let [checked, setchecked] = useState(false);
-
-  let filter = useSelector((state) => state.ProductReducer.filter);
-  let Brand = filter.brand || [];
+  const [checked, setchecked] = useState(false);
+  const { name, count } = props.brand;
+  const filter = useSelector((state) => state.ProductReducer.filter);
+  const brand = filter.brand || [];
   const dispatch = useDispatch();
+
   function CheckedInput() {
     if (!checked) {
-      Brand.push(props.brand.name);
+      brand.push(name);
     } else {
-      const index = Brand.findIndex((item) => item === props.brand.name);
-      Brand.splice(index, 1);
+      const index = brand.findIndex((item) => item === name);
+      brand.splice(index, 1);
     }
-    let filters = { ...filter, brand: Brand };
+    let filters = { ...filter, brand: brand };
     dispatch(changeFilter(filters));
     setchecked(!checked);
   }
+  
   useEffect(() => {
     if (Object.keys(filter).length === 0) {
       setchecked(false);
@@ -30,15 +33,15 @@ export default function BrandFilterItem(props) {
       <input
         type="checkbox"
         className="form-check-input"
-        id={props.brand.name}
+        id={name}
         checked={checked}
-        value={props.brand.name}
+        value={name}
         onClick={() => {
           CheckedInput();
         }}
       />
-      <label className="form-check-label" htmlFor={props.brand.name}>
-        {props.brand.name}({props.brand.count})
+      <label className="form-check-label" htmlFor={name}>
+        {name}({count})
       </label>
     </div>
   );

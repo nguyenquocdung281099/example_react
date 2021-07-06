@@ -1,22 +1,23 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { changeFilter } from "../../../redux/action";
+import React from "react";
 
 export default function TypeFilterItem(props) {
-  let [checked, setchecked] = useState(false);
-  let filter = useSelector((state) => state.ProductReducer.filter);
+  const [checked, setchecked] = useState(false);
+  const filter = useSelector((state) => state.ProductReducer.filter);
   let Type = filter.type || [];
   const dispatch = useDispatch();
+  const { name, count } = props.type;
   function CheckedInput() {
     if (!checked) {
-      Type.push(props.type.name);
+      Type.push(name);
     } else {
-      const index = Type.findIndex((item) => item === props.type.name);
+      const index = Type.findIndex((item) => item === name);
       console.log(index);
       Type.splice(index, 1);
     }
-    filter = { ...filter, type: Type };
-    dispatch(changeFilter(filter));
+    dispatch(changeFilter({ ...filter, type: Type }));
     setchecked(!checked);
   }
   useEffect(() => {
@@ -30,15 +31,15 @@ export default function TypeFilterItem(props) {
       <input
         type="checkbox"
         className="form-check-input"
-        id={props.type.name}
+        id={name}
         checked={checked}
-        value={props.type.name}
+        value={name}
         onClick={() => {
           CheckedInput();
         }}
       />
-      <label className="form-check-label" htmlFor={props.type.name}>
-        {props.type.name}({props.type.count})
+      <label className="form-check-label" htmlFor={name}>
+        {name}({count})
       </label>
     </div>
   );

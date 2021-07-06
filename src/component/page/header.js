@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { changeFilter } from "../../redux/action";
+import React from "react";
 
 export default function Header() {
   let [search, setSearch] = useState("");

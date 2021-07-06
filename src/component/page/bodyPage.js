@@ -1,6 +1,7 @@
-import Sidebar from "../sidebar/sidebar";
+import React from "react";
+import Sidebar from "../sidebar/sideBar";
 import ContainerProduct from "./ContainerProduct";
-export default function BodyPage(props) {
+export default function BodyPage() {
   return (
     <>
       <div className="row bodypage">

@@ -24,7 +24,9 @@ function* getProduct(action) {
     if (product.status === 200) {
       yield put(func_action.getDatsc(product.data));
     }
-  } catch (e) {}
+  } catch (e) {
+    //show toast
+  }
 }
 
 function* getFilters(action) {
@@ -75,4 +77,4 @@ function* getFilterRating(action) {
 
 function get(url) {
   return axios.get(url);
-} 
+}

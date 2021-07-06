@@ -1,15 +1,15 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-
+import React from "react";
 import BrandFilter from "./filter/brandFilter";
-import NavList from "./filter/navlist";
-import Typefilter from "./filter/typefiler";
-import Ratings from "./filter/Ratings";
+import NavList from "./filter/navList";
+import Typefilter from "./filter/typeFiler";
+import Ratings from "./filter/ratings";
 import PriceFilter from "./filter/priceFilter";
 import { changeFilter, getFilter } from "../../redux/action";
-import { getDataCategory } from "./funtion";
+import { getDataCategory } from "./function";
 
-export default function Sidebar(props) {
+export default function Sidebar() {
   const dispatch = useDispatch();
   const state = useSelector((state) => state.ProductReducer);
   let filter = state.filter;
@@ -27,14 +27,14 @@ export default function Sidebar(props) {
     dispatch(getFilter(filters));
   }, [filter, dispatch]);
 
-  let category = getDataCategory(datas);
+  const category = getDataCategory(datas);
 
   return (
     <div className="pt-2 mt-5 pt-5 filter">
       {Object.keys(filter).length !== 0 && (
         <button
           type="button"
-          class="btn btn-danger"
+          className="btn btn-danger"
           onClick={() => {
             dispatch(changeFilter({}));
           }}

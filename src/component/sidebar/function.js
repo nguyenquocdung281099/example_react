@@ -1,3 +1,6 @@
+import React from "react";
+import { changeFilter } from "../../redux/action";
+
 function getIndex(array, value) {
   return array.findIndex((item) =>
     item.name ? item.name === value : item === value
@@ -96,4 +99,27 @@ export const getTypes = (data) => {
   type.sort((a, b) => b.count - a.count);
   type = type.filter((item, key) => key < 5);
   return type;
+};
+
+export const handleVeiwRating = (rating) => {
+  let data = [];
+  for (let i = 1; i <= 5; i++) {
+    if (i <= rating) {
+      data[data.length] = <i className="fas fa-star" key={i}></i>;
+    } else {
+      data[data.length] = <i className="far fa-star" key={i}></i>;
+    }
+  }
+  return data;
+};
+export const dispatchPrice = (min, max, filter, dispatch) => {
+  let price = {};
+  if (min !== "") {
+    price = { price_gte: min };
+  }
+  if (max !== "") {
+    price = { ...price, price_lte: max };
+  }
+  price = { ...filter, ...price };
+  dispatch(changeFilter(price));
 };

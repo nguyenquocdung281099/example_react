@@ -1,18 +1,22 @@
 import { useEffect, useState } from "react";
 import ItemNav from "../filterItem/itemNav";
 import { useSelector } from "react-redux";
+import React from "react";
 
 export default function NavList(props) {
-  let [show, setshow] = useState(false);
+  const [show, setshow] = useState(false);
+  const filter = useSelector((state) => state.ProductReducer.filter);
+
   function handleshow() {
     setshow(!show);
   }
-  let filter = useSelector((state) => state.ProductReducer.filter);
+
   useEffect(() => {
     if (Object.keys(filter).length === 0) {
       setshow(false);
     }
   }, [filter]);
+
   return (
     <div className="col-12">
       <ItemNav
