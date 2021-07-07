@@ -3,16 +3,17 @@ import { useEffect } from "react";
 import React from "react";
 import BrandFilter from "./filter/brandFilter";
 import NavList from "./filter/navList";
-import Typefilter from "./filter/typeFiler";
+import TypeFilter from "./filter/typeFiler";
 import Ratings from "./filter/ratings";
 import PriceFilter from "./filter/priceFilter";
-import { changeFilter, getFilter } from "../../redux/action";
+import { changeFilter } from "../../redux/action";
 import { getDataCategory } from "./function";
+import { asynGetCategories } from "../../redux/thunk/thunk";
 
-export default function Sidebar() {
+export default function SideBar() {
   const dispatch = useDispatch();
   const state = useSelector((state) => state.ProductReducer);
-  let filter = state.filter;
+  const filter = state.filter;
   let datas = state.dataGetFilter || [];
 
   useEffect(() => {
@@ -24,7 +25,7 @@ export default function Sidebar() {
       delete filters._sort;
       delete filters._order;
     }
-    dispatch(getFilter(filters));
+    dispatch(asynGetCategories(filters));
   }, [filter, dispatch]);
 
   const category = getDataCategory(datas);
@@ -47,7 +48,7 @@ export default function Sidebar() {
         return <NavList key={index} id={index} data={item} />;
       })}
       <h3>Refine by</h3>
-      <Typefilter />
+      <TypeFilter />
       <h4>Brand</h4>
       <BrandFilter />
       <h4>Ratings</h4>

@@ -6,6 +6,7 @@ import React from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 import { changeFilter, getData } from "../../redux/action";
+import { asynGetData } from "../../redux/thunk/thunk";
 
 export default function ContainerProduct() {
   const ListProducts = useSelector((state) => state.ProductReducer);
@@ -15,8 +16,13 @@ export default function ContainerProduct() {
 
   useEffect(() => {
     dispatch(
-      getData({ ...filter, _page: pagination._page, _limit: pagination._limit })
+      asynGetData({
+        ...filter,
+        _page: pagination._page,
+        _limit: pagination._limit,
+      })
     );
+    // dispatch(asynGetData());
   }, [filter, dispatch, pagination._page, pagination._limit]);
 
   function onChangePagi(number, size) {

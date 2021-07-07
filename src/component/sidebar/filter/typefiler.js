@@ -1,9 +1,9 @@
-import TypeFilterItem from "../filterItem/typefilteritem";
+import TypeFilterItem from "../filterItem/typeFilterItem";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { getFilterType } from "../../../redux/action";
 import React from "react";
 import { getTypes } from "../function";
+import { asynGetType } from "../../../redux/thunk/thunk";
 export default function Typefilter() {
   const state = useSelector((state) => state.ProductReducer);
   let data = state.dataType;
@@ -15,7 +15,7 @@ export default function Typefilter() {
     if (filters.type) {
       delete filters.type;
     }
-    dispatch(getFilterType(filters));
+    dispatch(asynGetType(filters));
   }, [filter, dispatch]);
 
   const type = getTypes(data);

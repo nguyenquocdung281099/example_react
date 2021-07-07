@@ -9,7 +9,7 @@ export default function PriceFilter() {
   const [max, setMax] = useState();
   const filter = useSelector((state) => state.ProductReducer.filter);
   const dispatch = useDispatch();
-  let price = [
+  const price = [
     {
       min: 1,
       max: 80,

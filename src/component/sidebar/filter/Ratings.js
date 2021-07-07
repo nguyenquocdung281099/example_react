@@ -2,8 +2,8 @@ import { useEffect } from "react";
 import ItemRaiting from "../filterItem/itemRating";
 import { useDispatch, useSelector } from "react-redux";
 import React from "react";
-import { getFilterRating } from "../../../redux/action";
 import { getRatings } from "../function";
+import { asynGetRating } from "../../../redux/thunk/thunk";
 
 export default function Ratings() {
   function getIndex(array, value) {
@@ -20,7 +20,7 @@ export default function Ratings() {
     if (rait.rating_gte) {
       delete rait.rating_gte;
     }
-    dispatch(getFilterRating(rait));
+    dispatch(asynGetRating(rait));
   }, [filter, dispatch]);
 
   const ratings = getRatings(data, getIndex);

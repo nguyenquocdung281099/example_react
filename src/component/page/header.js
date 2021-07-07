@@ -4,7 +4,7 @@ import { changeFilter } from "../../redux/action";
 import React from "react";
 
 export default function Header() {
-  let [search, setSearch] = useState("");
+  const [search, setSearch] = useState("");
   const dispatch = useDispatch();
   const filter = useSelector((state) => state.ProductReducer.filter);
   const typeingTimeOutRef = useRef(null);
